@@ -1,0 +1,68 @@
+body {
+    background: url('/imgs/tile.jpg');
+}
+.header > h1 {
+    font-family: 'Tangerine', serif;  
+      text-align: center;
+      color: ivory;
+    font-size: 4em;
+}
+.inputs-wrap {
+    background: url('/imgs/formbg.jpg');
+    width: 40%;
+    height: 110px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+input[type=text] {
+    border: 1px solid black;
+    width: 50%;
+    margin: 2px;
+}
+input{
+    background: transparent;
+    margin: 2px 0;
+}
+.inputs-wrap {
+    display: flex;
+    flex-direction: column;
+}
+label {
+    width: 150px;
+    display: inline-block;
+}
+input[type=button] {
+    position: absolute;
+    left: 220px;
+}
+.inputs-wrap > div {
+    position: relative;
+}
+.newTodos {
+    display: flex;
+    flex-wrap: wrap;
+    background: url('/imgs/notebg.png') no-repeat;
+    height: 250px;
+    width: 188px;
+    padding: 10px 10px;
+}
+.newTodos > p:first-of-type {
+    margin: 20px -22px;
+}
+#todo {
+    display: flex;
+    flex-wrap: wrap;
+    /* overflow: scroll; */
+
+}
+p {
+    width: 150px;
+    word-wrap: break-word;
+}
+span {
+    position: relative;
+    top: 5px;
+    left: 144px;
+    font-size: 25px;
+}
