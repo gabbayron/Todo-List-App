@@ -53,8 +53,6 @@ input[type=button] {
 #todo {
     display: flex;
     flex-wrap: wrap;
-    /* overflow: scroll; */
-
 }
 p {
     width: 150px;
@@ -65,4 +63,10 @@ span {
     top: 5px;
     left: 144px;
     font-size: 25px;
+    cursor: pointer;
+    height: 10%;
+}
+#confirm {
+    position: relative;
+    left: 43%;
 }

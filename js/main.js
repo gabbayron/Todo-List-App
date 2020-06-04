@@ -6,7 +6,9 @@ var confirmBtn = document.getElementById('confirm');
 var newTodosDiv = document.getElementById('todo')
 var taskArr = [];
 var counterID = 0 // for id in object
+
 // Constructor 
+
 function Todo(id, todo, date, time) {
     this.id = id
     this.todo = todo
@@ -15,39 +17,40 @@ function Todo(id, todo, date, time) {
     this.status = false
 }
 
+Todo.prototype.addHTML = function () {
+    return (`
+                <span id=${this.id}>X</span> 
+                <p>Your Task Is : ${this.todo}</p>
+                <p>Due Date : ${this.date}</p>
+                <p>Due Time${this.time}</p> `
+
+
+    )
+}
+
 confirmBtn.addEventListener('click', addTask)
 
 function addTask() {
-    if (taskInput.value === '' || dateInput.value === '' || timeInput === '') {
+    if (taskInput.value === '' || dateInput.value === '' || timeInput.value === '') {
         alert('Fill Up All Fields')
     }
     else {
         // Create Task Div
         var div = document.createElement('div');
         div.classList = 'newTodos'
-        // Remove Button
-        var span = document.createElement('span');
-        span.textContent = 'X'
-        span.setAttribute('id', counterID)
-        span.addEventListener('click', removeTodo)
-        div.appendChild(span)
-        // Getting task value and creating element
-        var pTask = document.createElement('p')
-        pTask.textContent = `Your Task is : ${taskInput.value}`
-        div.appendChild(pTask)
-        // Getting Date value and creating element
-        var pDate = document.createElement('p')
-        pDate.textContent = `Due Date : ${dateInput.value}`
-        div.appendChild(pDate)
-        var pTime = document.createElement('p')
-        pTime.textContent = `Due Time : ${timeInput.value}`
-        div.appendChild(pTime)
-        newTodosDiv.appendChild(div)
-        // Add to Object Array
+        // Creating Object
         var temp = new Todo(counterID, taskInput.value, dateInput.value, timeInput.value)
+        // Calling prototype 
+        div.innerHTML = temp.addHTML()
+        newTodosDiv.appendChild(div)
         taskArr.push(temp)
         toLocalStorage()
         counterID++
+        // Add Remove Event To All Spans 
+        var span = document.querySelectorAll('span')
+        for (var i = 0; i < span.length; i++) {
+            span[i].addEventListener('click', removeTodo)
+        }
     }
 }
 
@@ -60,17 +63,21 @@ function fromLocalStorage() {
     var data = JSON.parse(temp)
     if (temp) {
         taskArr = data
+        console.log(taskArr)
     }
 }
 
 function removeTodo(e) {
     this.parentNode.parentNode.removeChild(this.parentNode);
     taskArr.splice(e.target.id, 1)
+
+    // Re arrange tasks array
     for (var i = 0; i < taskArr.length; i++) {
         taskArr[i].id = i
+        document.querySelectorAll('span')[i].id = i
     }
     localStorage.setItem('tasks', JSON.stringify(taskArr))
-    counterID -= 1
+    counterID--
 }
 
 // Load localStorage Data 
@@ -80,25 +87,13 @@ window.addEventListener('load', function () {
     for (var i = 0; i < taskArr.length; i++) {
         var div = document.createElement('div');
         div.classList = 'newTodos'
-        // Remove Button
-        var span = document.createElement('span');
-        span.textContent = 'X'
-        span.setAttribute('id', counterID)
-        span.addEventListener('click', removeTodo)
-        div.appendChild(span)
-        // Task
-        var pTask = document.createElement('p')
-        pTask.textContent = `Your Task is : ${taskArr[i].todo}`
-        div.appendChild(pTask)
-        // Date
-        var pDate = document.createElement('p')
-        pDate.textContent = `Due Date : ${taskArr[i].data}`
-        div.appendChild(pDate)
-        // Time 
-        var pTime = document.createElement('p')
-        pTime.textContent = `Due Time : ${taskArr[i].time}`
-        div.appendChild(pTime)
+        var temp = new Todo(counterID, taskArr[i].todo, taskArr[i].date, taskArr[i].time)
+        div.innerHTML = temp.addHTML()
         newTodosDiv.appendChild(div)
+        var span = document.querySelectorAll('span')
+        for (var i = 0; i < span.length; i++) {
+            span[i].addEventListener('click', removeTodo)
+        }
         counterID++
     }
 })
