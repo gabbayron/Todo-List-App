@@ -5,6 +5,7 @@ var timeInput = document.getElementById('time');
 var confirmBtn = document.getElementById('confirm');
 var resetBtn = document.getElementById('reset')
 var newTodosDiv = document.getElementById('todo');
+var headerDiv = document.querySelector('.header')
 var taskArr = [];
 var counterID = 0 // for id in object
 
@@ -21,17 +22,32 @@ function Todo(id, todo, date, time) {
 Todo.prototype.toHTML = function () {
     return (`
                 <span id=${this.id}>X</span>
-                <p>Your Task Is : ${this.todo}</p>
-                <p>Due Date : ${this.date} <br>
-                Due Time : ${this.time}</p> `
+                <p><b><em>Your Task Is :</em></b> ${this.todo}</p>
+                <p><b><em>Due Date :</em></b></p> <p> ${this.date}<br>
+                 ${this.time}</p> `
     )
 }
 
 confirmBtn.addEventListener('click', addTask)
 
 function addTask() {
-    if (taskInput.value === '' || dateInput.value === '' || timeInput.value === '') {
-        alert('Fill Up All Fields')
+    // in case fields are not filled 
+    if (taskInput.value === '' || dateInput.value === '') {
+        var h2 = document.createElement('h2')
+        h2.innerText = 'Fill Up All Mandatory Fields';
+        if (taskInput.value === '') {
+            taskInput.style.border = '2px solid red'
+            taskInput.focus()
+        } if (dateInput.value === '') {
+            dateInput.style.border = '2px solid red'
+            dateInput.focus()
+        }
+        headerDiv.append(h2)
+        setTimeout(function () {
+            h2.innerText = ''
+            taskInput.style.border = '2px solid black'
+            dateInput.style.border = '2px solid black'
+        }, 2000)
     }
     else {
         // Create Task Div
@@ -48,7 +64,7 @@ function addTask() {
         // Add Remove Event To  Span 
         var span = div.querySelector('span');
         span.addEventListener('click', removeTodo);
-        resetForm()
+        // resetForm()
     }
 }
 resetBtn.addEventListener('click', resetForm)

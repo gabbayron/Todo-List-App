@@ -1,5 +1,6 @@
 body {
-    background: url('/imgs/tile.jpg');
+    background: url('../imgs/tile.jpg');
+    zoom: 125%;
 }
 
 .header > h1 {
@@ -10,11 +11,27 @@ body {
 }
 
 .inputs-wrap {
-    background: url('/imgs/formbg.jpg');
+    background: url('../imgs/formbg.jpg');
     width: 40%;
-    height: 110px;
+    /* height: 110px; */
     margin: 0 auto;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 10px;
+}
+
+h2 {
+    display: inline;
+    position: absolute;
+    left: 50%;
+    top: 95px;
+    transform: translate(-50%, -50%);
+    font-family: sans-serif, serif;  
+    text-align: center;
+    color: ivory;
+    -webkit-text-stroke: 1px red;
+    font-size: 35px;
 }
 
 input[type=text] {
@@ -28,10 +45,7 @@ input{
     margin: 2px 0;
 }
 
-.inputs-wrap {
-    display: flex;
-    flex-direction: column;
-}
+
 
 label {
     width: 150px;
@@ -47,7 +61,7 @@ label {
 .newTodos {
     display: flex;
     flex-wrap: wrap;
-    background: url('/imgs/notebg.png') no-repeat;
+    background: url('../imgs/notebg.png') no-repeat;
     height: 250px;
     width: 188px;
     padding: 10px 10px;
@@ -55,9 +69,14 @@ label {
 }
 
 .newTodos > p:first-of-type {
-    margin: 20px -22px;
-    height: 40%;  
+    margin: 15px -22px;
+    height: 45%;
     overflow: auto;
+}
+
+.newTodos >p:last-child{
+    position: relative;
+    bottom: 25px;
 }
 
 #todo {
@@ -76,6 +95,8 @@ p {
 
 span {
     position: relative;
+    color: red;
+    font-weight: bold;
     top: 8px;
     left: 144px;
     font-size: 25px;
@@ -88,6 +109,6 @@ span {
 #confirm , #reset{
     position: relative;
     left: 36%;
-    bottom: 10px;
+    bottom: 3px;
     margin: 0 5px;
 }
