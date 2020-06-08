@@ -3,7 +3,8 @@ var taskInput = document.getElementById('task');
 var dateInput = document.getElementById('date');
 var timeInput = document.getElementById('time');
 var confirmBtn = document.getElementById('confirm');
-var newTodosDiv = document.getElementById('todo')
+var resetBtn = document.getElementById('reset')
+var newTodosDiv = document.getElementById('todo');
 var taskArr = [];
 var counterID = 0 // for id in object
 
@@ -17,14 +18,12 @@ function Todo(id, todo, date, time) {
     this.status = false
 }
 
-Todo.prototype.addHTML = function () {
+Todo.prototype.toHTML = function () {
     return (`
-                <span id=${this.id}>X</span> 
+                <span id=${this.id}>X</span>
                 <p>Your Task Is : ${this.todo}</p>
-                <p>Due Date : ${this.date}</p>
-                <p>Due Time${this.time}</p> `
-
-
+                <p>Due Date : ${this.date} <br>
+                Due Time : ${this.time}</p> `
     )
 }
 
@@ -41,17 +40,24 @@ function addTask() {
         // Creating Object
         var temp = new Todo(counterID, taskInput.value, dateInput.value, timeInput.value)
         // Calling prototype 
-        div.innerHTML = temp.addHTML()
+        div.innerHTML = temp.toHTML()
         newTodosDiv.appendChild(div)
         taskArr.push(temp)
         toLocalStorage()
         counterID++
-        // Add Remove Event To All Spans 
-        var span = document.querySelectorAll('span')
-        for (var i = 0; i < span.length; i++) {
-            span[i].addEventListener('click', removeTodo)
-        }
+        // Add Remove Event To  Span 
+        var span = div.querySelector('span');
+        span.addEventListener('click', removeTodo);
+        resetForm()
     }
+}
+resetBtn.addEventListener('click', resetForm)
+// Reset Form 
+
+function resetForm() {
+    taskInput.value = '';
+    dateInput.value = '';
+    timeInput.value = '';
 }
 
 function toLocalStorage() {
@@ -63,7 +69,6 @@ function fromLocalStorage() {
     var data = JSON.parse(temp)
     if (temp) {
         taskArr = data
-        console.log(taskArr)
     }
 }
 
@@ -74,7 +79,7 @@ function removeTodo(e) {
     // Re arrange tasks array
     for (var i = 0; i < taskArr.length; i++) {
         taskArr[i].id = i
-        document.querySelectorAll('span')[i].id = i
+        newTodosDiv.querySelectorAll('span')[i].id = i
     }
     localStorage.setItem('tasks', JSON.stringify(taskArr))
     counterID--
@@ -88,13 +93,13 @@ window.addEventListener('load', function () {
         var div = document.createElement('div');
         div.classList = 'newTodos'
         var temp = new Todo(counterID, taskArr[i].todo, taskArr[i].date, taskArr[i].time)
-        div.innerHTML = temp.addHTML()
+        div.innerHTML = temp.toHTML()
         newTodosDiv.appendChild(div)
-        var span = document.querySelectorAll('span')
-        for (var i = 0; i < span.length; i++) {
-            span[i].addEventListener('click', removeTodo)
-        }
         counterID++
+    }
+    var span = newTodosDiv.querySelectorAll('span')
+    for (var i = 0; i < span.length; i++) {
+        span[i].addEventListener('click', removeTodo)
     }
 })
 

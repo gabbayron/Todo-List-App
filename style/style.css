@@ -1,12 +1,14 @@
 body {
     background: url('/imgs/tile.jpg');
 }
+
 .header > h1 {
     font-family: 'Tangerine', serif;  
       text-align: center;
       color: ivory;
     font-size: 4em;
 }
+
 .inputs-wrap {
     background: url('/imgs/formbg.jpg');
     width: 40%;
@@ -20,25 +22,28 @@ input[type=text] {
     width: 50%;
     margin: 2px;
 }
+
 input{
     background: transparent;
     margin: 2px 0;
 }
+
 .inputs-wrap {
     display: flex;
     flex-direction: column;
 }
+
 label {
     width: 150px;
     display: inline-block;
+    line-height: 30px;
 }
-input[type=button] {
-    position: absolute;
-    left: 220px;
-}
-.inputs-wrap > div {
-    position: relative;
-}
+
+@keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+    }
+    
 .newTodos {
     display: flex;
     flex-wrap: wrap;
@@ -46,27 +51,43 @@ input[type=button] {
     height: 250px;
     width: 188px;
     padding: 10px 10px;
+    animation: fadeIn ease 2s;
 }
+
 .newTodos > p:first-of-type {
     margin: 20px -22px;
+    height: 40%;  
+    overflow: auto;
 }
+
 #todo {
     display: flex;
     flex-wrap: wrap;
 }
+
 p {
     width: 150px;
     word-wrap: break-word;
 }
+.newTodos:hover span {
+    visibility: visible;
+    opacity: 1;
+}
+
 span {
     position: relative;
-    top: 5px;
+    top: 8px;
     left: 144px;
     font-size: 25px;
     cursor: pointer;
     height: 10%;
+    transition: opacity  1s;
+    opacity: 0;
 }
-#confirm {
+
+#confirm , #reset{
     position: relative;
-    left: 43%;
+    left: 36%;
+    bottom: 10px;
+    margin: 0 5px;
 }
