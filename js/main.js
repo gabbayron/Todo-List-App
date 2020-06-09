@@ -7,10 +7,10 @@ var resetBtn = document.getElementById('reset')
 var newTodosDiv = document.getElementById('todo');
 var headerDiv = document.querySelector('.header')
 var taskArr = [];
+var temp;
 var counterID = 0 // for id in object
 
 // Constructor 
-
 function Todo(id, todo, date, time) {
     this.id = id
     this.todo = todo
@@ -30,6 +30,32 @@ Todo.prototype.toHTML = function () {
 
 confirmBtn.addEventListener('click', addTask)
 
+function createTaskHtml(id, todo, date, time) {
+    var temp = new Todo(id, todo, date, time)
+    if (counterID === taskArr.length)
+        taskArr.push(temp)
+    return temp.toHTML()
+}
+
+function createNote() {
+    // Create Task Div
+    var div = document.createElement('div');
+    div.classList = 'newTodos'
+    // Creating Object && Html Content
+    //when its first added
+    if (counterID === taskArr.length) {
+        div.innerHTML = createTaskHtml(counterID, taskInput.value, dateInput.value, timeInput.value)
+    }
+    else if (counterID <= taskArr.length) {
+        div.innerHTML = createTaskHtml(counterID, taskArr[counterID].todo, taskArr[counterID].date, taskArr[counterID].time)
+    }
+    newTodosDiv.appendChild(div)
+    // Add Remove Event To  Span
+    var span = newTodosDiv.querySelectorAll('span')[counterID];
+    span.addEventListener('click', removeTodo);
+    resetForm()
+}
+
 function addTask() {
     // in case fields are not filled 
     if (taskInput.value === '' || dateInput.value === '') {
@@ -45,30 +71,18 @@ function addTask() {
         headerDiv.append(h2)
         setTimeout(function () {
             h2.innerText = ''
-            taskInput.style.border = '2px solid black'
-            dateInput.style.border = '2px solid black'
+            taskInput.style.border = '1px solid black'
+            dateInput.style.border = '1px solid black'
         }, 2000)
     }
     else {
-        // Create Task Div
-        var div = document.createElement('div');
-        div.classList = 'newTodos'
-        // Creating Object
-        var temp = new Todo(counterID, taskInput.value, dateInput.value, timeInput.value)
-        // Calling prototype 
-        div.innerHTML = temp.toHTML()
-        newTodosDiv.appendChild(div)
-        taskArr.push(temp)
+        createNote()
         toLocalStorage()
         counterID++
-        // Add Remove Event To  Span 
-        var span = div.querySelector('span');
-        span.addEventListener('click', removeTodo);
-        // resetForm()
     }
 }
+
 resetBtn.addEventListener('click', resetForm)
-// Reset Form 
 
 function resetForm() {
     taskInput.value = '';
@@ -81,17 +95,20 @@ function toLocalStorage() {
 }
 
 function fromLocalStorage() {
-    var temp = localStorage.getItem('tasks');
-    var data = JSON.parse(temp)
-    if (temp) {
+    var tempStroage = localStorage.getItem('tasks');
+    var data = JSON.parse(tempStroage)
+    if (tempStroage) {
         taskArr = data
+        for (i = 0; i < taskArr.length; i++) {
+            createNote()
+            counterID++
+        }
     }
 }
 
 function removeTodo(e) {
     this.parentNode.parentNode.removeChild(this.parentNode);
     taskArr.splice(e.target.id, 1)
-
     // Re arrange tasks array
     for (var i = 0; i < taskArr.length; i++) {
         taskArr[i].id = i
@@ -101,21 +118,10 @@ function removeTodo(e) {
     counterID--
 }
 
-// Load localStorage Data 
+// Load localStorage Data and add notes 
 
 window.addEventListener('load', function () {
     fromLocalStorage()
-    for (var i = 0; i < taskArr.length; i++) {
-        var div = document.createElement('div');
-        div.classList = 'newTodos'
-        var temp = new Todo(counterID, taskArr[i].todo, taskArr[i].date, taskArr[i].time)
-        div.innerHTML = temp.toHTML()
-        newTodosDiv.appendChild(div)
-        counterID++
-    }
-    var span = newTodosDiv.querySelectorAll('span')
-    for (var i = 0; i < span.length; i++) {
-        span[i].addEventListener('click', removeTodo)
-    }
 })
+
 
