@@ -6,6 +6,7 @@ var confirmBtn = document.getElementById('confirm');
 var resetBtn = document.getElementById('reset')
 var newTodosDiv = document.getElementById('todo');
 var headerDiv = document.querySelector('.header')
+var h2 = document.getElementById('fillFields')
 var taskArr = [];
 var temp;
 var counterID = 0 // for id in object
@@ -42,7 +43,7 @@ function createNote() {
     var div = document.createElement('div');
     div.classList = 'newTodos'
     // Creating Object && Html Content
-    //when its first added
+    //When its first added
     if (counterID === taskArr.length) {
         div.innerHTML = createTaskHtml(counterID, taskInput.value, dateInput.value, timeInput.value)
     }
@@ -59,7 +60,6 @@ function createNote() {
 function addTask() {
     // in case fields are not filled 
     if (taskInput.value === '' || dateInput.value === '') {
-        var h2 = document.createElement('h2')
         h2.innerText = 'Fill Up All Mandatory Fields';
         if (taskInput.value === '') {
             taskInput.style.border = '2px solid red'
@@ -68,7 +68,6 @@ function addTask() {
             dateInput.style.border = '2px solid red'
             dateInput.focus()
         }
-        headerDiv.append(h2)
         setTimeout(function () {
             h2.innerText = ''
             taskInput.style.border = '1px solid black'
